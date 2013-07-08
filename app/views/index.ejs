@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<title><%= title %></title>
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	</head>
+	<body>
+    	<h1><%= title %></h1>
+    	<p>Clicking the button below will toggle an LED connected to Raspberry Pi I/O pin 16 on and off. It makes use of the <a href="https://npmjs.org/package/pi-gpio" target="_blank">pi-gpio</a> Node.js module and is built on the <a href="http://expressjs.com/" target="_blank">Express</a> web framework.</p>
+		<button id="toggle" href="/toggle">Turn LED On</button>
+
+		<script>
+			var state = false;
+			var BUTTON_TEXT = function(){
+				if(state) return "Turn LED Off";
+				return "Turn LED On";
+			};
+
+			$(document).ready(function() {
+				$('#toggle').bind('click', function(e){
+					e.preventDefault();
+
+					$.ajax({
+						url: "/toggle",
+						success: function(){
+							state = !state;	//toggle the state flag
+							$('#toggle').text(BUTTON_TEXT());
+						}
+					});
+
+				});
+			});	
+		</script>
+	</body>
+</html>
